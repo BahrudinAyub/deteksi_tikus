@@ -29,12 +29,16 @@ def extract_features(image_path):
     # Calculate additional texture properties
     entropy = shannon_entropy(s)
 
-    # Calculate region properties
-    props = regionprops(s.astype(int))[0]
-    metric = props['major_axis_length']
-    eccentricity = props['eccentricity']
+    # Calculate region properties if regions are present
+    props = regionprops(s.astype(int))
+    if props:
+        metric = props[0]['major_axis_length']
+        eccentricity = props[0]['eccentricity']
+    else:
+        metric = eccentricity = np.nan  # Set to NaN if no regions are found
 
     return [np.mean(h), np.mean(s), np.mean(v), dissimilarity, correlation, homogeneity, contrast, asm, energy, entropy, metric, eccentricity]
+
 
 # List of folder paths
 base_folder = r"D:/Kuliah/Project/Python/deteksi_tikus/dateset_tikus"
