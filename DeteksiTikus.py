@@ -23,7 +23,7 @@ def extract_texture_features(image):
 
     return [avg_color[0], avg_color[1], avg_color[2], contrast, correlation, energy, homogeneity]
 
-# Load the test image
+# Load the test image membaca gambar
 test_image_path = 'D:/Kuliah/Project/Python/deteksi_tikus/dateset_tikus/datates/uji9.jpg'
 test_image = cv2.imread(test_image_path)
 pil_test_image = Image.fromarray(cv2.cvtColor(test_image, cv2.COLOR_BGR2RGB))
