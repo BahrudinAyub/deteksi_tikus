@@ -24,7 +24,7 @@ def extract_texture_features(image):
     return [avg_color[0], avg_color[1], avg_color[2], contrast, correlation, energy, homogeneity]
 
 # Load the test image membaca gambar
-test_image_path = 'D:/Kuliah/Project/Python/deteksi_tikus/dateset_tikus/datates/uji18.jpg'
+test_image_path = 'D:/Kuliah/Project/Python/deteksi_tikus/dateset_tikus/datates/uji21.jpg'
 test_image = cv2.imread(test_image_path)
 pil_test_image = Image.fromarray(cv2.cvtColor(test_image, cv2.COLOR_BGR2RGB))
 removed_bg_test_image = remove(pil_test_image).convert("RGB")
@@ -122,7 +122,20 @@ for obj in detected_objects:
     cv2.rectangle(removed_bg_test_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
     cv2.putText(removed_bg_test_image, f"{obj['category']}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+
+    # Draw bounding boxes around detected objects on the original image
+for obj in detected_objects:
+    (x, y, w, h) = cv2.boundingRect(obj['contour'])
+    cv2.rectangle(removed_bg_test_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.putText(removed_bg_test_image, f"{obj['category']}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    # Jika gambar terdeteksi sebagai "ada tikus", simpan gambar dengan nama "terdapat_tikus.jpg"
+    if obj['category'] == 'ada tikus':
+        cv2.imwrite('terdapat_tikus.jpg', removed_bg_test_image)
+
 # Display the final processed image with bounding boxes
 cv2.imshow('Detected Objects', removed_bg_test_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
